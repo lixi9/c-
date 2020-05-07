@@ -1,0 +1,83 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
+using namespace std;
+
+const int CMax = 30;
+
+void Skaitymas(int &n, double kg[]);
+void rastiDidziausia(int n, double kg[]);
+void rastiMaziausia(int n, double kg[]);
+double gautiVidurki(int n, double kg[]);
+void Rezultatai(int n, double kg[]);
+
+ofstream rez("rezultatai1.txt");
+
+int main()
+{
+    int n;
+    double kg[CMax];
+    Skaitymas(n, kg);
+    Rezultatai(n, kg);
+    return 0;
+}
+
+void Skaitymas(int &n, double kg[])
+{
+    ifstream duom ("duomenys1.txt");
+
+    duom >> n;
+    for(int i = 0; i < n; i++)
+    {
+        duom >> kg[i];
+    }
+    duom.close();
+}
+
+void rastiDidziausia(int n, double kg[])
+{
+    double did = 0;
+    int nr;
+    for(int i = 0; i < n; i++)
+    {
+        if(kg[i] > did)
+        {
+            did = kg[i];
+            nr = i;
+        }
+    }
+    rez << "Didziausias svoris " << fixed << setprecision(3) << kg[nr] << " Nr " << nr + 1 << endl;
+}
+
+void rastiMaziausia(int n, double kg[])
+{
+    double maz = 999;
+    int nr;
+    for(int i = 0; i < n; i++)
+    {
+        if(kg[i] != 0 && kg[i] < maz)
+        {
+            maz = kg[i];
+            nr = i;
+        }
+    }
+    rez << "Maziausias svoris " << fixed << setprecision(3) << kg[nr] << " Nr " << nr + 1 << endl;
+}
+
+double gautiVidurki(int n, double kg[])
+{
+    double vidurkis = 0;
+    for(int i = 0; i < n; i++)
+    {
+        vidurkis += kg[i];
+    }
+    return vidurkis / n;
+}
+
+void Rezultatai(int n, double kg[])
+{
+    rastiDidziausia(n, kg);
+    rastiMaziausia(n, kg);
+    rez << "Vidutiniskai vienas mokinys atnese: " << gautiVidurki(n, kg) << endl;
+}
